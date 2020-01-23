@@ -1,2 +1,2 @@
 # Csharp-Web
-C# Web Development course assignments
+C# Web Development course assignments @ SoftUni
