@@ -6,6 +6,7 @@
     using System.Net.Http;
     using System.Net.Sockets;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     public class StartUp
@@ -30,21 +31,16 @@
 
             using (NetworkStream networkStream = tcpClient.GetStream())
             {
-                // TODO: Use buffer
                 byte[] requestBytes = new byte[1000000];
                 int bytesRead = await networkStream.ReadAsync(requestBytes, 0, requestBytes.Length);
                 string request = Encoding.UTF8.GetString(requestBytes, 0, bytesRead);
-
-                string responseText = @"<form action='/Account/Login' method='post'>
-                                                    <input type=date name='date' />
-                                                    <input type=text name='username' />
-                                                    <input type=password name='password' />
-                                                    <input type=submit value='Login' />
-                                            </form>" + "<h1>" + DateTime.UtcNow + "</h1>";
+                var userName = Regex.Match(request, @"Cookie: user=[^\n]*\n").Value;
+                string responseText = @"<h1>" + userName + "</h1>" + "<h1>" + DateTime.UtcNow + "</h1>";
 
                 string response = "HTTP/1.0 200 OK" + NewLine +
                                   "Server: SoftUniServer/1.0" + NewLine +
                                   "Content-Type: text/html" + NewLine +
+                                  "Set-Cookie: user=Niki" + NewLine +
                                   "Content-Length: " + responseText.Length + NewLine +
                                   NewLine +
                                   responseText;
