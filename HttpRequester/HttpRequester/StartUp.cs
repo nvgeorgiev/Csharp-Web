@@ -34,16 +34,34 @@
                 byte[] requestBytes = new byte[1000000];
                 int bytesRead = await networkStream.ReadAsync(requestBytes, 0, requestBytes.Length);
                 string request = Encoding.UTF8.GetString(requestBytes, 0, bytesRead);
-                var userName = Regex.Match(request, @"Cookie: user=[^\n]*\n").Value;
-                string responseText = @"<h1>" + userName + "</h1>" + "<h1>" + DateTime.UtcNow + "</h1>";
+
+                var sessionStore = new Dictionary<string, int>();
+                var sid = Regex.Match(request, @"sid=[^\n]*\n").Value?.Replace("sid=", string.Empty).Trim();
+
+                var newSid = Guid.NewGuid().ToString();
+                var count = 0;
+
+                if (sessionStore.ContainsKey(sid)
+                {
+                   sessionStore[sid]++; 
+                   count = sessionStore[sid];
+                }
+                else
+                {
+                    sid = null;
+                    sessionStore[newSid] = 1;
+                    count = 1;
+                }
+
+                string responseText = @"<h1>" + sid + "</h1>" + "<h1>" + DateTime.UtcNow + "</h1>";
 
                 string response = "HTTP/1.0 200 OK" + NewLine +
                                   "Server: SoftUniServer/1.0" + NewLine +
                                   "Content-Type: text/html" + NewLine +
-                                  "Set-Cookie: user=Niki" + NewLine +
+                                  (string.IsNullOrWhiteSpace(sid) ? ("Set-Cookie: sid=" + newSid + NewLine) : sting.Empty) +
                                   "Content-Length: " + responseText.Length + NewLine +
                                   NewLine +
-                                  responseText;
+                                  responseText; 
 
                 byte[] responseBytes = Encoding.UTF8.GetBytes(response);
 
