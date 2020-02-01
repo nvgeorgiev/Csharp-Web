@@ -1,6 +1,7 @@
 ﻿namespace HttpRequester
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Http;
@@ -11,6 +12,8 @@
 
     public class StartUp
     {
+        static Dictionary<string, int> SessionStore = new Dictionary<string, int>();
+
         public static async Task Main()
         {
             TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 80);
@@ -35,33 +38,33 @@
                 int bytesRead = await networkStream.ReadAsync(requestBytes, 0, requestBytes.Length);
                 string request = Encoding.UTF8.GetString(requestBytes, 0, bytesRead);
 
-                var sessionStore = new Dictionary<string, int>();
                 var sid = Regex.Match(request, @"sid=[^\n]*\n").Value?.Replace("sid=", string.Empty).Trim();
 
                 var newSid = Guid.NewGuid().ToString();
                 var count = 0;
 
-                if (sessionStore.ContainsKey(sid)
+                if (SessionStore.ContainsKey(sid))
                 {
-                   sessionStore[sid]++; 
-                   count = sessionStore[sid];
+                    SessionStore[sid]++;
+                    count = SessionStore[sid];
                 }
                 else
                 {
                     sid = null;
-                    sessionStore[newSid] = 1;
+                    SessionStore[newSid] = 1;
                     count = 1;
                 }
 
-                string responseText = @"<h1>" + sid + "</h1>" + "<h1>" + DateTime.UtcNow + "</h1>";
+                string responseText = @"<h1>" + count + "</h1>" + "<h1>" + DateTime.UtcNow + "</h1>";
 
                 string response = "HTTP/1.0 200 OK" + NewLine +
                                   "Server: SoftUniServer/1.0" + NewLine +
                                   "Content-Type: text/html" + NewLine +
-                                  (string.IsNullOrWhiteSpace(sid) ? ("Set-Cookie: sid=" + newSid + NewLine) : sting.Empty) +
+                                  "Set-Cookie: user=Niki; Max-Age: 3600; HttpOnly;" + NewLine +
+                                  (string.IsNullOrWhiteSpace(sid) ? ("Set-Cookie: sid=" + newSid + NewLine) : string.Empty) +
                                   "Content-Length: " + responseText.Length + NewLine +
                                   NewLine +
-                                  responseText; 
+                                  responseText;
 
                 byte[] responseBytes = Encoding.UTF8.GetBytes(response);
 
