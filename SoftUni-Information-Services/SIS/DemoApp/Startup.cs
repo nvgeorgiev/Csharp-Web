@@ -1,14 +1,14 @@
 ﻿using SIS.HTTP;
 using SIS.HTTP.Response;
-using SIS.MvcFramework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-
 namespace DemoApp
 {
+    using SIS.MvcFramework;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+
     public class Startup : IMvcApplication
     {
         public void Configure(IList<Route> routeTable)
