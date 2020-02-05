@@ -1,7 +1,7 @@
-﻿using SIS.HTTP;
-using SIS.HTTP.Response;
-namespace DemoApp
+﻿namespace DemoApp
 {
+    using SIS.HTTP;
+    using SIS.HTTP.Response;
     using SIS.MvcFramework;
     using System;
     using System.Collections.Generic;
