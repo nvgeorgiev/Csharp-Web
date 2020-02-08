@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace SIS.MvcFramework.Tests
+﻿namespace SIS.MvcFramework.Tests
 {
+    using System.Collections.Generic;
+
     public class TestViewModel
     {
         public int Year { get; set; }

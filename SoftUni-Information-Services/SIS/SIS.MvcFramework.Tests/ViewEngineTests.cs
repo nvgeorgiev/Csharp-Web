@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.IO;
-using Xunit;
-
 namespace SIS.MvcFramework.Tests
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using Xunit;
+
     public class ViewEngineTests
     {
         [Theory]
