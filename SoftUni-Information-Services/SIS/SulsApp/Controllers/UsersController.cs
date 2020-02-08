@@ -1,13 +1,13 @@
-﻿using SIS.HTTP;
-using SIS.HTTP.Response;
-using SIS.MvcFramework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-namespace SulsApp.Controllers
+﻿namespace SulsApp.Controllers
 {
+    using SIS.HTTP;
+    using SIS.HTTP.Response;
+    using SIS.MvcFramework;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+
     class UsersController : Controller
     {
         public HttpResponse Login(HttpRequest request)
