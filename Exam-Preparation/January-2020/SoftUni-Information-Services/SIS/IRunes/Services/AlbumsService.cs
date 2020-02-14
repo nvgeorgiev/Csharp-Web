@@ -1,5 +1,6 @@
 ﻿using IRunes.Models;
 using IRunes.ViewModels.Albums;
+using IRunes.ViewModels.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,27 @@ namespace IRunes.Services
             }).ToList();
 
             return allAlbums;
+        }
+
+        public AlbumsDetailsViewModel GetDetails(string id)
+        {
+            var album = this.db.Albums
+                .Where(x => x.Id == id)
+                .Select(x => new AlbumsDetailsViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Cover = x.Cover,
+                    Price = x.Price,
+                    Tracks = x.Tracks.Select(t => new TrackInfoViewModel
+                    {
+                        Id = t.Id,
+                        Name = t.Name
+                    })
+                })
+                .FirstOrDefault();
+
+            return album;
         }
     }
 }

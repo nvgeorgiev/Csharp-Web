@@ -60,9 +60,15 @@ namespace IRunes.Controllers
             return this.Redirect("/Albums/All");
         }
 
-        public HttpResponse Details() 
+        public HttpResponse Details(string id) 
         {
-            return this.View();
+            if (!this.IsUserLoggedIn())
+            {
+                return this.Redirect("/Users/Login");
+            }
+
+            var viewModel = this.albumsService.GetDetails(id);
+            return this.View(viewModel);
         }
     }
 }
