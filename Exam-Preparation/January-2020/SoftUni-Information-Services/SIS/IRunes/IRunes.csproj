@@ -6,8 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Albums\" />
-    <Folder Include="ViewModels\Home\" />
     <Folder Include="ViewModels\Tracks\" />
   </ItemGroup>
 

@@ -71,5 +71,15 @@ namespace IRunes.Services
 
             return hash.ToString();
         }
+
+        public string GetUsername(string id)
+        {
+            var username = this.db.Users
+                                    .Where(x => x.Id == id)
+                                    .Select(x => x.Username)
+                                    .FirstOrDefault();
+
+            return username;
+        }
     }
 }
